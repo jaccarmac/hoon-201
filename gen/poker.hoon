@@ -1,3 +1,6 @@
+::  TODO: simplify the code at the top (remove results, winner, loser i think)
+::  TODO: convert @t gates to tape (allows removing crip/trip trick)
+::
 /+  playing-cards
 =,  playing-cards
 :-  %say
