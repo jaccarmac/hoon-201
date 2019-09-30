@@ -24,6 +24,17 @@
     ^-  tape
     (weld (weld (pretty winner) " beats ") (pretty loser))
 |%
++$  poker-hand-kind  $?
+::  %straight-flush
+::  %four-of-a-kind
+::  %full-house
+::  %flush
+::  %straight
+::  %three-of-a-kind
+::  %two-pair
+::  %pair
+  %high-card
+==
 ::  $poker-sort: sort hands according to poker rules
 ::
 ++  poker-sort
@@ -34,7 +45,42 @@
   ^-  ?
   ?.  &(=(5 (lent p)) =(5 (lent q)))
     ~|(%bad-hand-size !!)
+  =/  p-kind  (hand-to-kind p)
+  =/  q-kind  (hand-to-kind q)
+  ?.  =(p-kind q-kind)
+    (gte (kind-to-num p-kind) (kind-to-num q-kind))
+  ?-  p-kind
+::    %straight-flush
+::    %four-of-a-kind
+::    %full-house
+::    %flush
+::    %straight
+::    %three-of-a-kind
+::    %two-pair
+::    %pair
+    %high-card  (cmp-high-card p q)
+  ==
+++  kind-to-num
+  |=  k=poker-hand-kind
+  ^-  @ud
+  ?-  k
+::    %straight-flush
+::    %four-of-a-kind
+::    %full-house
+::    %flush
+::    %straight
+::    %three-of-a-kind
+::    %two-pair
+::    %pair
+    %high-card  0
+  ==
+++  cmp-high-card
+  |=  [p=deck q=deck]
   &
+++  hand-to-kind
+  |=  d=deck
+  ^-  poker-hand-kind
+  %high-card
 ::  $pretty: pretty print a list of cards
 ::
 ++  pretty
