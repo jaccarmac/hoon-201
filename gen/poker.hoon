@@ -3,5 +3,9 @@
 :-  %say
 |=  [[* eny=@uvJ *] *]
 :-  %noun
-^-  deck
-(shuffle-deck make-deck eny)
+=<  =/  shuffled  (shuffle-deck make-deck eny)
+    =^  hand-1  shuffled  (draw 5 shuffled)
+    =^  hand-2  shuffled  (draw 5 shuffled)
+    [hand-1 hand-2]
+|%
+--
