@@ -1,8 +1,17 @@
 /+  playing-cards
 =,  playing-cards
 :-  %say
+::  $eny: entropy from outside
+::
 |=  [[* eny=@uvJ *] *]
 :-  %noun
+::  $shuffled: a shuffled deck of cards
+::  $hand-1: five-card poker hand
+::  $hand-2: five-card poker hand drawn after hand-1
+::  $results: hand-1 and hand-2 sorted according to poker rules
+::  $winner: the better hand (first element of results)
+::  $loser: the worse hand (last element of results)
+::
 =<  =/  shuffled  (shuffle-deck make-deck eny)
     =^  hand-1    shuffled  (draw 5 shuffled)
     =^  hand-2    shuffled  (draw 5 shuffled)
@@ -12,19 +21,36 @@
     ^-  tape
     (weld (weld (pretty winner) " beats ") (pretty loser))
 |%
+::  $poker-sort: sort hands according to poker rules
+::
 ++  poker-sort
+  ::  $p: a hand of five cards
+  ::  $q: another hand of five cards
+  ::
   |=  [p=deck q=deck]
   ^-  ?
   &
+::  $pretty: pretty print a list of cards
+::
 ++  pretty
+  ::  $d: a deck (of any size)
+  ::
   |=  d=deck
   ^-  tape
   (weld "[" (weld (join ' ' (turn d pretty-darc)) "]"))
+::  $pretty-darc: pretty print a card playing-cards:darc
+::
 ++  pretty-darc
+  ::  $c: a card
+  ::
   |=  c=darc
   ^-  @t
   (crip (weld (trip (pretty-val val.c)) (trip (pretty-sut sut.c))))
+::  $pretty-val: pretty print the value of a card
+::
 ++  pretty-val
+  ::  $v: card value: per playing-cards, should be in the range 1-13
+  ::
   |=  v=@ud
   ^-  @t
   ?+  v  ~|(%bad-val-in-darc !!)
@@ -42,7 +68,11 @@
     %12  'Q'
     %13  'K'
   ==
+::  $pretty-sut: pretty print the suit of a card
+::
 ++  pretty-sut
+  ::  $s: a suit constant from playing-cards
+  ::
   |=  s=suit
   ^-  @t
   ?-  s
