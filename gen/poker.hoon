@@ -32,6 +32,8 @@
   ::
   |=  [p=deck q=deck]
   ^-  ?
+  ?.  &(=(5 (lent p)) =(5 (lent q)))
+    ~|(%bad-hand-size !!)
   &
 ::  $pretty: pretty print a list of cards
 ::
