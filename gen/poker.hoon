@@ -27,7 +27,7 @@
 ++  pretty-val
   |=  v=@ud
   ^-  @t
-  ?+  v  !!
+  ?+  v  ~|(%bad-val-in-darc !!)
     %1   '1'
     %2   '2'
     %3   '3'
