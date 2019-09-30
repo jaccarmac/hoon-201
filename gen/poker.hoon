@@ -38,7 +38,7 @@
   |=  d=deck
   ^-  tape
   (weld "[" (weld (join ' ' (turn d pretty-darc)) "]"))
-::  $pretty-darc: pretty print a card playing-cards:darc
+::  $pretty-darc: pretty print a card (playing-cards:darc)
 ::
 ++  pretty-darc
   ::  $c: a card
