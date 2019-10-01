@@ -126,7 +126,11 @@
   ::
   |=  d=deck
   ^-  tape
-  (weld "[" (weld (reel (turn d pretty-darc) |=([p=tape q=tape] (weld p q))) "]"))
+  %+  weld
+    "["
+  %+  weld
+    (reel (turn d pretty-darc) |=([p=tape q=tape] (weld p q)))
+  "]"
 ::  $pretty-darc: pretty print a card (playing-cards:darc)
 ::
 ++  pretty-darc
