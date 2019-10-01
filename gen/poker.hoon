@@ -18,26 +18,26 @@
 =<  =/  shuffled  (shuffle-deck make-deck eny)
     =^  hand-1    shuffled  (draw 5 shuffled)
     =^  hand-2    shuffled  (draw 5 shuffled)
-    =/  results   (sort ~[hand-1 hand-2] poker-sort)
+    =/  results   (sort ~[hand-1 hand-2] cmp-poker-hand)
     =/  winner    (snag 0 results)
     =/  loser     (snag 1 results)
     ^-  tape
     (weld (weld (pretty winner) " beats ") (pretty loser))
 |%
 +$  poker-hand-kind  $?
-::  %straight-flush
-::  %four-of-a-kind
-::  %full-house
-::  %flush
-::  %straight
-::  %three-of-a-kind
-::  %two-pair
-::  %pair
+  %straight-flush
+  %four-of-a-kind
+  %full-house
+  %flush
+  %straight
+  %three-of-a-kind
+  %two-pair
+  %pair
   %high-card
 ==
-::  $poker-sort: sort hands according to poker rules
+::  $cmp-poker-hand: compare two five-card poker hands
 ::
-++  poker-sort
+++  cmp-poker-hand
   ::  $p: a hand of five cards
   ::  $q: another hand of five cards
   ::
@@ -45,42 +45,81 @@
   ^-  ?
   ?.  &(=(5 (lent p)) =(5 (lent q)))
     ~|(%bad-hand-size !!)
+  =.  p       (sort p cmp-darc)
+  =.  q       (sort q cmp-darc)
   =/  p-kind  (hand-to-kind p)
   =/  q-kind  (hand-to-kind q)
   ?.  =(p-kind q-kind)
     (gte (kind-to-num p-kind) (kind-to-num q-kind))
   ?-  p-kind
-::    %straight-flush
-::    %four-of-a-kind
-::    %full-house
-::    %flush
-::    %straight
-::    %three-of-a-kind
-::    %two-pair
-::    %pair
-    %high-card  (cmp-high-card p q)
+    %straight-flush   (cmp-straight-flush p q)
+    %four-of-a-kind   (cmp-four-of-a-kind p q)
+    %full-house       (cmp-full-house p q)
+    %flush            (cmp-flush p q)
+    %straight         (cmp-straight p q)
+    %three-of-a-kind  (cmp-three-of-a-kind p q)
+    %two-pair         (cmp-two-pair p q)
+    %pair             (cmp-pair p q)
+    %high-card        (cmp-high-card p q)
   ==
-++  kind-to-num
-  |=  k=poker-hand-kind
-  ^-  @ud
-  ?-  k
-::    %straight-flush
-::    %four-of-a-kind
-::    %full-house
-::    %flush
-::    %straight
-::    %three-of-a-kind
-::    %two-pair
-::    %pair
-    %high-card  0
-  ==
-++  cmp-high-card
-  |=  [p=deck q=deck]
-  &
 ++  hand-to-kind
   |=  d=deck
   ^-  poker-hand-kind
   %high-card
+++  cmp-straight-flush
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-four-of-a-kind
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-full-house
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-flush
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-straight
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-three-of-a-kind
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-two-pair
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-pair
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-high-card
+  |=  [p=deck q=deck]
+  ^-  ?
+  &
+++  cmp-darc
+  |=  [p=darc q=darc]
+  ^-  ?
+  (gte val.p val.q)
+++  kind-to-num
+  |=  k=poker-hand-kind
+  ^-  @ud
+  ?-  k
+    %straight-flush   8
+    %four-of-a-kind   7
+    %full-house       6
+    %flush            5
+    %straight         4
+    %three-of-a-kind  3
+    %two-pair         2
+    %pair             1
+    %high-card        0
+  ==
 ::  $pretty: pretty print a list of cards
 ::
 ++  pretty
