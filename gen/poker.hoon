@@ -49,11 +49,11 @@
   ?.  =(p-kind q-kind)
     (gte (kind-to-num p-kind) (kind-to-num q-kind))
   ?-  p-kind
-    %straight-flush   (cmp-straight-flush p q)
+    %straight-flush   (cmp-high-card p q)
     %four-of-a-kind   (cmp-four-of-a-kind p q)
     %full-house       (cmp-full-house p q)
-    %flush            (cmp-flush p q)
-    %straight         (cmp-straight p q)
+    %flush            (cmp-high-card p q)
+    %straight         (cmp-high-card p q)
     %three-of-a-kind  (cmp-three-of-a-kind p q)
     %two-pair         (cmp-two-pair p q)
     %pair             (cmp-pair p q)
@@ -137,23 +137,11 @@
     =(sut.c1 sut.c4)
     =(sut.c1 sut.c5)
   ==
-++  cmp-straight-flush
-  |=  [p=deck q=deck]
-  ^-  ?
-  &
 ++  cmp-four-of-a-kind
   |=  [p=deck q=deck]
   ^-  ?
   &
 ++  cmp-full-house
-  |=  [p=deck q=deck]
-  ^-  ?
-  &
-++  cmp-flush
-  |=  [p=deck q=deck]
-  ^-  ?
-  &
-++  cmp-straight
   |=  [p=deck q=deck]
   ^-  ?
   &
