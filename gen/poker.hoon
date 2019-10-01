@@ -54,17 +54,11 @@
   =/  c4  (snag 3 d)
   =/  c5  (snag 4 d)
   =/  is-straight
-    ?|
-      &(=(val.c1 13) =(val.c2 12) =(val.c3 11) =(val.c4 10) =(val.c5 1))
-      &(=(val.c1 13) =(val.c2 12) =(val.c3 11) =(val.c4 2) =(val.c5 1))
-      &(=(val.c1 13) =(val.c2 12) =(val.c3 3) =(val.c4 2) =(val.c5 1))
-      &(=(val.c1 13) =(val.c2 4) =(val.c3 3) =(val.c4 2) =(val.c5 1))
-      ?&
-        =(val.c1 +(val.c2))
-        =(val.c2 +(val.c3))
-        =(val.c3 +(val.c4))
-        =(val.c4 +(val.c5))
-      ==
+    ?&
+      =(val.c1 +(val.c2))
+      =(val.c2 +(val.c3))
+      =(val.c3 +(val.c4))
+      |(=(val.c4 +(val.c5)) &(=(val.c1 13) =(val.c5 1)))
     ==
   =/  is-flush
     ?&
