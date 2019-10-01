@@ -10,7 +10,9 @@
     =/  winner   ?:(result hand-1 hand-2)
     =/  loser    ?:(result hand-2 hand-1)
     ^-  tape
-    (weld (weld (pretty winner) " beats ") (pretty loser))
+    %+  weld
+      (weld (pretty winner) " beats ")
+    (pretty loser)
 |%
 +$  poker-hand-kind  $?
   %straight-flush
@@ -26,14 +28,19 @@
 ++  cmp-poker-hand
   |=  [p=deck q=deck]
   ^-  ?
-  ?.  &(=(5 (lent p)) =(5 (lent q)))
+  ?.  ?&
+        .=  5  (lent p)
+        .=  5  (lent q)
+      ==
     ~|(%bad-hand-size !!)
   =.  p       (sort p cmp-darc)
   =.  q       (sort q cmp-darc)
   =/  p-kind  (hand-to-kind p)
   =/  q-kind  (hand-to-kind q)
   ?.  =(p-kind q-kind)
-    (gte (kind-to-num p-kind) (kind-to-num q-kind))
+    %+  gte
+      (kind-to-num p-kind)
+    (kind-to-num q-kind)
   ?-  p-kind
     %straight-flush   (cmp-high-card p q)
     %four-of-a-kind   (cmp-four-of-a-kind p q)
@@ -55,10 +62,16 @@
   =/  c5  (snag 4 d)
   =/  is-straight
     ?&
-      =(val.c1 +(val.c2))
-      =(val.c2 +(val.c3))
-      =(val.c3 +(val.c4))
-      |(=(val.c4 +(val.c5)) &(=(val.c1 13) =(val.c5 1)))
+      .=  val.c1  +(val.c2)
+      .=  val.c2  +(val.c3)
+      .=  val.c3  +(val.c4)
+      ?|
+        .=  val.c4  +(val.c5)
+        ?&
+          .=  val.c1  13
+          .=  val.c5  1
+        ==
+      ==
     ==
   =/  is-flush
     ?&
@@ -70,13 +83,29 @@
   ?:  &(is-straight is-flush)
     %straight-flush
   ?:  ?|
-        &(=(val.c1 val.c2) =(val.c1 val.c3) =(val.c1 val.c4))
-        &(=(val.c2 val.c3) =(val.c3 val.c4) =(val.c3 val.c5))
+        ?&
+          .=  val.c1  val.c2
+          .=  val.c1  val.c3
+          .=  val.c1  val.c4
+        ==
+        ?&
+          .=  val.c2  val.c3
+          .=  val.c3  val.c4
+          .=  val.c3  val.c5
+        ==
       ==
     %four-of-a-kind
   ?:  ?|
-        &(=(val.c1 val.c2) =(val.c3 val.c4) =(val.c3 val.c5))
-        &(=(val.c1 val.c2) =(val.c1 val.c3) =(val.c4 val.c5))
+        ?&
+          .=  val.c1  val.c2
+          .=  val.c3  val.c4
+          .=  val.c3  val.c5
+        ==
+        ?&
+          .=  val.c1  val.c2
+          .=  val.c1  val.c3
+          .=  val.c4  val.c5
+        ==
       ==
     %full-house
   ?:  is-flush
@@ -84,15 +113,33 @@
   ?:  is-straight
     %straight
   ?:  ?|
-        &(=(val.c1 val.c2) =(val.c1 val.c3))
-        &(=(val.c2 val.c3) =(val.c2 val.c4))
-        &(=(val.c3 val.c4) =(val.c3 val.c5))
+        ?&
+          .=  val.c1  val.c2
+          .=  val.c1  val.c3
+        ==
+        ?&
+          .=  val.c2  val.c3
+          .=  val.c2  val.c4
+        ==
+        ?&
+          .=  val.c3  val.c4
+          .=  val.c3  val.c5
+        ==
       ==
     %three-of-a-kind
   ?:  ?|
-        &(=(val.c1 val.c2) =(val.c3 val.c4))
-        &(=(val.c1 val.c2) =(val.c4 val.c5))
-        &(=(val.c2 val.c3) =(val.c4 val.c5))
+        ?&
+          .=  val.c1  val.c2
+          .=  val.c3  val.c4
+        ==
+        ?&
+          .=  val.c1  val.c2
+          .=  val.c4  val.c5
+        ==
+        ?&
+          .=  val.c2  val.c3
+          .=  val.c4  val.c5
+        ==
       ==
     %two-pair
   ?:  ?|
@@ -151,12 +198,16 @@
   %+  weld
     "["
   %+  weld
-    (reel (turn d pretty-darc) |=([p=tape q=tape] (weld p q)))
+    %+  reel
+      (turn d pretty-darc)
+    |=  [p=tape q=tape]  (weld p q)
   "]"
 ++  pretty-darc
   |=  c=darc
   ^-  tape
-  (weld (pretty-val val.c) (pretty-sut sut.c))
+  %+  weld
+    (pretty-val val.c)
+  (pretty-sut sut.c)
 ++  pretty-val
   |=  v=@ud
   ^-  tape
