@@ -1,5 +1,3 @@
-::  TODO: simplify the code at the top (remove results, winner, loser i think)
-::
 /+  playing-cards
 =,  playing-cards
 :-  %say
@@ -10,16 +8,16 @@
 ::  $shuffled: a shuffled deck of cards
 ::  $hand-1: five-card poker hand
 ::  $hand-2: five-card poker hand drawn after hand-1
-::  $results: hand-1 and hand-2 sorted according to poker rules
-::  $winner: the better hand (first element of results)
-::  $loser: the worse hand (last element of results)
+::  $result: result of poker rules comparsion between the hands
+::  $winner: the better hand
+::  $loser: the worse hand
 ::
 =<  =/  shuffled  (shuffle-deck make-deck eny)
-    =^  hand-1    shuffled  (draw 5 shuffled)
-    =^  hand-2    shuffled  (draw 5 shuffled)
-    =/  results   (sort ~[hand-1 hand-2] cmp-poker-hand)
-    =/  winner    (snag 0 results)
-    =/  loser     (snag 1 results)
+    =^  hand-1   shuffled  (draw 5 shuffled)
+    =^  hand-2   shuffled  (draw 5 shuffled)
+    =/  result   (cmp-poker-hand hand-1 hand-2)
+    =/  winner   ?:(result hand-1 hand-2)
+    =/  loser    ?:(result hand-2 hand-1)
     ^-  tape
     (weld (weld (pretty winner) " beats ") (pretty loser))
 |%
