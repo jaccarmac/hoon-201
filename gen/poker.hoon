@@ -62,7 +62,81 @@
 ++  hand-to-kind
   |=  d=deck
   ^-  poker-hand-kind
+  =/  c1  (snag 0 d)
+  =/  c2  (snag 1 d)
+  =/  c3  (snag 2 d)
+  =/  c4  (snag 3 d)
+  =/  c5  (snag 4 d)
+  ?:  &((hand-is-straight d) (hand-is-flush d))
+    %straight-flush
+  ?:  ?|
+        &(=(val.c1 val.c2) =(val.c1 val.c3) =(val.c1 val.c4))
+        &(=(val.c2 val.c3) =(val.c3 val.c4) =(val.c3 val.c5))
+      ==
+    %four-of-a-kind
+  ?:  ?|
+        &(=(val.c1 val.c2) =(val.c3 val.c4) =(val.c3 val.c5))
+        &(=(val.c1 val.c2) =(val.c1 val.c3) =(val.c4 val.c5))
+      ==
+    %full-house
+  ?:  (hand-is-flush d)
+    %flush
+  ?:  (hand-is-straight d)
+    %straight
+  ?:  ?|
+        &(=(val.c1 val.c2) =(val.c1 val.c3))
+        &(=(val.c2 val.c3) =(val.c2 val.c4))
+        &(=(val.c3 val.c4) =(val.c3 val.c5))
+      ==
+    %three-of-a-kind
+  ?:  ?|
+        &(=(val.c1 val.c2) =(val.c3 val.c4))
+        &(=(val.c1 val.c2) =(val.c4 val.c5))
+        &(=(val.c2 val.c3) =(val.c4 val.c5))
+      ==
+    %two-pair
+  ?:  ?|
+        =(val.c1 val.c2)
+        =(val.c2 val.c3)
+        =(val.c3 val.c4)
+        =(val.c4 val.c5)
+      ==
+    %pair
   %high-card
+++  hand-is-straight
+  |=  d=deck
+  ^-  ?
+  =/  c1  (snag 0 d)
+  =/  c2  (snag 1 d)
+  =/  c3  (snag 2 d)
+  =/  c4  (snag 3 d)
+  =/  c5  (snag 4 d)
+  ?|
+    &(=(val.c1 13) =(val.c2 12) =(val.c3 11) =(val.c4 10) =(val.c5 1))
+    &(=(val.c1 13) =(val.c2 12) =(val.c3 11) =(val.c4 2) =(val.c5 1))
+    &(=(val.c1 13) =(val.c2 12) =(val.c3 3) =(val.c4 2) =(val.c5 1))
+    &(=(val.c1 13) =(val.c2 4) =(val.c3 3) =(val.c4 2) =(val.c5 1))
+    ?&
+      =(val.c1 +(val.c2))
+      =(val.c2 +(val.c3))
+      =(val.c3 +(val.c4))
+      =(val.c4 +(val.c5))
+    ==
+  ==
+++  hand-is-flush
+  |=  d=deck
+  ^-  ?
+  =/  c1  (snag 0 d)
+  =/  c2  (snag 1 d)
+  =/  c3  (snag 2 d)
+  =/  c4  (snag 3 d)
+  =/  c5  (snag 4 d)
+  ?&
+    =(sut.c1 sut.c2)
+    =(sut.c1 sut.c3)
+    =(sut.c1 sut.c4)
+    =(sut.c1 sut.c5)
+  ==
 ++  cmp-straight-flush
   |=  [p=deck q=deck]
   ^-  ?
@@ -145,7 +219,7 @@
   |=  v=@ud
   ^-  tape
   ?+  v  ~|(%bad-val-in-darc !!)
-    %1   "1"
+    %1   "A"
     %2   "2"
     %3   "3"
     %4   "4"
