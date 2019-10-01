@@ -66,7 +66,7 @@
         =(val.c4 +(val.c5))
       ==
     ==
-  =/  is-flush    
+  =/  is-flush
     ?&
       =(sut.c1 sut.c2)
       =(sut.c1 sut.c3)
