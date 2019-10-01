@@ -1,5 +1,4 @@
 ::  TODO: simplify the code at the top (remove results, winner, loser i think)
-::  TODO: convert @t gates to tape (allows removing crip/trip trick)
 ::
 /+  playing-cards
 =,  playing-cards
@@ -127,36 +126,36 @@
   ::
   |=  d=deck
   ^-  tape
-  (weld "[" (weld (join ' ' (turn d pretty-darc)) "]"))
+  (weld "[" (weld (reel (turn d pretty-darc) |=([p=tape q=tape] (weld p q))) "]"))
 ::  $pretty-darc: pretty print a card (playing-cards:darc)
 ::
 ++  pretty-darc
   ::  $c: a card
   ::
   |=  c=darc
-  ^-  @t
-  (crip (weld (trip (pretty-val val.c)) (trip (pretty-sut sut.c))))
+  ^-  tape
+  (weld (pretty-val val.c) (pretty-sut sut.c))
 ::  $pretty-val: pretty print the value of a card
 ::
 ++  pretty-val
   ::  $v: card value: per playing-cards, should be in the range 1-13
   ::
   |=  v=@ud
-  ^-  @t
+  ^-  tape
   ?+  v  ~|(%bad-val-in-darc !!)
-    %1   '1'
-    %2   '2'
-    %3   '3'
-    %4   '4'
-    %5   '5'
-    %6   '6'
-    %7   '7'
-    %8   '8'
-    %9   '9'
-    %10  '10'
-    %11  'J'
-    %12  'Q'
-    %13  'K'
+    %1   "1"
+    %2   "2"
+    %3   "3"
+    %4   "4"
+    %5   "5"
+    %6   "6"
+    %7   "7"
+    %8   "8"
+    %9   "9"
+    %10  "10"
+    %11  "J"
+    %12  "Q"
+    %13  "K"
   ==
 ::  $pretty-sut: pretty print the suit of a card
 ::
@@ -164,11 +163,11 @@
   ::  $s: a suit constant from playing-cards
   ::
   |=  s=suit
-  ^-  @t
+  ^-  tape
   ?-  s
-    %hearts    '♥'
-    %spades    '♠'
-    %clubs     '♣'
-    %diamonds  '♦'
+    %hearts    "♥"
+    %spades    "♠"
+    %clubs     "♣"
+    %diamonds  "♦"
   ==
 --
