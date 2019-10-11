@@ -7,20 +7,23 @@
 ^-  (unit @ud)
 =<  (dfs ~[[1 oak]] leaf)
 |%
+::  $tree-queue: type of a list of trees with depth attached
+::
++$  tree-queue  (list [@ud (tree)])
 ::  $dfs: do a recursive depth-first search of forest for leaf
 ::
 ++  dfs
   ::  $forest: trees remaining to search, with addresses
   ::  $leaf: element to search for
   ::
-  |=  [forest=(list [@ud (tree)]) leaf=*]
+  |=  [forest=tree-queue leaf=*]
   ^-  (unit @ud)
   ?~  forest  ~
   ::  $oak: tree to check
   ::  $adr: address of oak in ^oak
   ::
-  =/  oak  +:(snag 0 `(list [@ud (tree)])`forest)
-  =/  adr  -:(snag 0 `(list [@ud (tree)])`forest)
+  =/  oak  +:(snag 0 `tree-queue`forest)
+  =/  adr  -:(snag 0 `tree-queue`forest)
   ?~  oak  ~
   ?:  =(leaf n.oak)  (some (peg adr 2))
   %_  $
