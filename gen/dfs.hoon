@@ -23,10 +23,9 @@
   =/  adr  -:(snag 0 `(list)`forest)
   ?~  oak  ~
   ?:  =(leaf n.oak)  (some (peg adr 2))
-  =.  forest  (slag 1 forest)
   =.  forest
     %-  weld
-      :_  forest
+      :_  (slag 1 forest)
         :~
           [(peg adr 6) l.oak]
           [(peg adr 7) r.oak]
