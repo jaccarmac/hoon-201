@@ -2,7 +2,7 @@
 ::  $oak: tree to search
 ::  $leaf: element to search for
 ::
-|=  [* [oak=(tree) leaf=*]]
+|=  [* [oak=(tree) leaf=*] ~]
 :-  %noun
 ^-  (unit @ud)
 =<  (dfs ~[[1 oak]] leaf)
