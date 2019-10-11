@@ -2,7 +2,7 @@
 ::  $oak: tree to search
 ::  $leaf: element to search for
 ::
-|=  [* [oak=(tree) leaf=*] ~]
+|=  [* [oak=(tree) leaf=* ~] ~]
 :-  %noun
 ^-  (unit @ud)
 =<  (dfs ~[[1 oak]] leaf)
@@ -24,7 +24,7 @@
   ::
   =/  oak  +:(snag 0 `tree-queue`forest)
   =/  adr  -:(snag 0 `tree-queue`forest)
-  ?~  oak  ~
+  ?~  oak  $(forest (slag 1 `tree-queue`forest))
   ?:  =(leaf n.oak)  (some (peg adr 2))
   %_  $
     forest  %-  weld
