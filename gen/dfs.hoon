@@ -19,8 +19,8 @@
   ::  $oak: tree to check
   ::  $adr: address of oak in ^oak
   ::
-  =/  oak  +:(snag 0 `(list)`forest)
-  =/  adr  -:(snag 0 `(list)`forest)
+  =/  oak  +:(snag 0 `(list [@ud (tree)])`forest)
+  =/  adr  -:(snag 0 `(list [@ud (tree)])`forest)
   ?~  oak  ~
   ?:  =(leaf n.oak)  (some (peg adr 2))
   %_  $
