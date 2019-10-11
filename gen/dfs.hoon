@@ -14,7 +14,7 @@
   ::  $leaf: element to search for
   ::
   |=  [forest=(list [@ud (tree)]) leaf=*]
-  ^-  (unit @)
+  ^-  (unit @ud)
   ?~  forest  ~
   ::  $oak: tree to check
   ::  $adr: address of oak in ^oak
